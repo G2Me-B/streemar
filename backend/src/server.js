@@ -5,8 +5,11 @@ import { connectDB } from "./lib/db.js"
 
 
 const PORT = process.env.PORT
+// Instantiate app
 const app = express()
 
+// Middleware instantiation
+app.use(express.json())
 
 
 // Routes
