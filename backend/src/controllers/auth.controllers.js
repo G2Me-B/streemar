@@ -20,13 +20,13 @@ export function signup(req, res) {
             return res.status(400).json({ message: "Invalid email format" });
         }
 
-        const existingUser = User.findOne({email})
-        if(existingUser){
-            return res.status(400).json({message:"Email already exists, kindy use another"})
+        const existingUser = User.findOne({ email })
+        if (existingUser) {
+            return res.status(400).json({ message: "Email already exists, kindy use another" })
         }
 
         // Generate a token id
-        const idx = Math.floor(Math.random() *100) + 1;
+        const idx = Math.floor(Math.random() * 100) + 1;
         const randomAvatar = `${idx}`
         const newUser = new User.create({
             email,
@@ -34,15 +34,19 @@ export function signup(req, res) {
             password,
             profilePic: randomAvatar
         })
+        // TODO: CREATE USER UB STREAM AS WELL
 
-        const token = jwt.sign({userId:newUser._id},process.env.JWT_SECRET_KEY,{
-            expiresIn:'7d'
+        const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET_KEY, {
+            expiresIn: '7d'
         })
 
-        res.cookie("jwt", token,{
-            maxAge:7*24*60*60*1000,
-            httpOnly:true // prevent xss attacks
+        res.cookie("jwt", token, {
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            httpOnly: true, // prevent xss attacks
+            sameSite: "strict",//prevent CSRF attacks
+            secure: process.env.NODE_ENV === "production"
         })
+         res.status(201).json({sucess:true, user:newUser })
     } catch (error) { }
 }
 
