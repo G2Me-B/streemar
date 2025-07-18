@@ -1,4 +1,7 @@
 import User from "../models/User.js";
+import jwt from "jsonwebtoken"
+import "dotenv/config"
+
 export function signup(req, res) {
     const { email, password, fullName } = req.body
 
@@ -17,14 +20,29 @@ export function signup(req, res) {
             return res.status(400).json({ message: "Invalid email format" });
         }
 
-        const existingUSer = User.findOne({email})
-        if(existingUSer){
+        const existingUser = User.findOne({email})
+        if(existingUser){
             return res.status(400).json({message:"Email already exists, kindy use another"})
         }
 
         // Generate a token id
         const idx = Math.floor(Math.random() *100) + 1;
-        const randomAvatar
+        const randomAvatar = `${idx}`
+        const newUser = new User.create({
+            email,
+            fullName,
+            password,
+            profilePic: randomAvatar
+        })
+
+        const token = jwt.sign({userId:newUser._id},process.env.JWT_SECRET_KEY,{
+            expiresIn:'7d'
+        })
+
+        res.cookie("jwt", token,{
+            maxAge:7*24*60*60*1000,
+            httpOnly:true // prevent xss attacks
+        })
     } catch (error) { }
 }
 
