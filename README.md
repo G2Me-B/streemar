@@ -1,7 +1,9 @@
 # streemar
 # ✨ Fullstack Chat & Video Calling App ✨
+This is a fully fledged chat and video call application
 
-> Highlights: this project integgrates
+
+> Highlights: this project integrates
 
 - 🌐 Real-time Messaging with Typing Indicators & Reactions
 - 📹 1-on-1 and Group Video Calls with Screen Sharing & Recording
