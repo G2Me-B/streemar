@@ -2,7 +2,7 @@ import User from "../models/User.js";
 import jwt from "jsonwebtoken"
 import "dotenv/config"
 
-export function signup(req, res) {
+export async function signup(req, res) {
     const { email, password, fullName } = req.body
 
     try {
@@ -20,15 +20,15 @@ export function signup(req, res) {
             return res.status(400).json({ message: "Invalid email format" });
         }
 
-        const existingUser = User.findOne({ email })
+        const existingUser = await User.findOne({ email })
         if (existingUser) {
             return res.status(400).json({ message: "Email already exists, kindy use another" })
         }
 
         // Generate a token id
         const idx = Math.floor(Math.random() * 100) + 1;
-        const randomAvatar = `${idx}`
-        const newUser = new User.create({
+        const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`
+        const newUser = await User.create({
             email,
             fullName,
             password,
@@ -46,8 +46,11 @@ export function signup(req, res) {
             sameSite: "strict",//prevent CSRF attacks
             secure: process.env.NODE_ENV === "production"
         })
-         res.status(201).json({sucess:true, user:newUser })
-    } catch (error) { }
+        res.status(201).json({ sucess: true, user: newUser })
+    } catch (error) {
+        console.log("Error in signup controller", error)
+        res.status(500).json({ message: "Internal Server Error " })
+    }
 }
 
 export function login(req, res) {
