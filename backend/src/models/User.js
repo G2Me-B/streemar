@@ -47,18 +47,18 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true })
 
 
-const User = mongoose.model("User", userSchema)
-
 // pre hook fro hashing use logs
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next()
-    try {
-        const salt = await bcrypt.genSalt(10)
-        this.password = await bcrypt.hash(this.password, salt)
-        next();
-    } catch (error) {
-        next(error)
-    }
+        try {
+    const salt = await bcrypt.genSalt(10)
+    this.password = await bcrypt.hash(this.password, salt)
+    next();
+} catch (error) {
+    next(error)
+}
 })
+
+const User = mongoose.model("User", userSchema)
 
 export default User;
