@@ -33,7 +33,7 @@ export async function getMyFriends(req, res) {
 }
 
 
-export async function sendFriendRequestname(req, res) {
+export async function sendFriendRequest(req, res) {
     try {
         const myId = req.user.id
         const friendId = req.params.id
