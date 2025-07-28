@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import jwt from "jsonwebtoken"
 import "dotenv/config"
+import { upsertStreamUser } from "../lib/stream.js";
 
 
 export async function signup(req, res) {
@@ -35,8 +36,21 @@ export async function signup(req, res) {
             password,
             profilePic: randomAvatar
         })
-        // TODO: CREATE USER UB STREAM AS WELL
 
+        // TODO: CREATE USER UB STREAM AS WELL
+        try {
+            await upsertStreamUser({
+                id: newUser._id.toString(),
+                name: newUser.fullName,
+                Image: newUser.profilePic || ""
+            })
+            console.log(`Stream user created for ${newUser.fullName}`)
+        } catch (error) {
+            console.log("Error creating Stream user: ", error)
+        }
+
+
+        // Create a token for use logs
         const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET_KEY, {
             expiresIn: '7d'
         })
@@ -90,5 +104,5 @@ export async function login(req, res) {
 
 export async function logout(req, res) {
     res.clearCookie("jwt")
-    res.status(200).json({sucess:true, message:"Logout successful"})
+    res.status(200).json({ sucess: true, message: "Logout successful" })
 }
