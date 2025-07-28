@@ -106,3 +106,34 @@ export async function logout(req, res) {
     res.clearCookie("jwt")
     res.status(200).json({ sucess: true, message: "Logout successful" })
 }
+
+export async function onboard(req, res) {
+    try {
+        const userId = req.user._id
+        const { fullName, bio, nativeLanguage, location } = req.body
+        if (!fullName || !bio || !nativeLanguage || !location) {
+            return res.status(400).json({
+                message: "All fields are required",
+                missingFields: [
+                    !fullName && "fullName",
+                    !bio && "bio",
+                    !nativeLanguage && "nativeLanguage",
+                    !location && "location",
+                ].filter(Boolean),
+            })
+        }
+        const updatedUser = await User.findByIdAndUpdate(userId, {
+            ...req.body,
+            isOnboarded: true,
+        }, { new: true })
+
+        // todo: UPDATE USER INFO IN STREAM
+        if(!updatedUser) return res.status(404).json({message:"User not found"})
+
+            res.status(200).json({sucess:true, user:updatedUser})
+
+    } catch (error) {
+        console.error("Onboading error: ", error)
+        res.status(500).json({ message: "Internal Server Error " })
+    }
+}
