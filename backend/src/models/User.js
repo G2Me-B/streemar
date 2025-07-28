@@ -42,25 +42,25 @@ const userSchema = new mongoose.Schema({
     },
     friends: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User"
-    }]
+        ref: "User",
+    },]
 }, { timestamps: true })
 
 
 // pre hook fro hashing use logs
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) return next()
-        try {
-    const salt = await bcrypt.genSalt(10)
-    this.password = await bcrypt.hash(this.password, salt)
-    next();
-} catch (error) {
-    next(error)
-}
+    try {
+        const salt = await bcrypt.genSalt(10)
+        this.password = await bcrypt.hash(this.password, salt)
+        next();
+    } catch (error) {
+        next(error)
+    }
 })
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
-    const isPasswordCorrect= await bcrypt.compare(enteredPassword,this.password)
+    const isPasswordCorrect = await bcrypt.compare(enteredPassword, this.password)
     return isPasswordCorrect
 }
 
