@@ -17,5 +17,7 @@ router.post("/friend-requst/:id",sendFriendRequest)
 // accept a friend request
 router.put("/fiend-request/:id/accept",acceptFriendRequest)
 
+router.get("/friend-request",getFriendRequest)
+
 
 export default router
