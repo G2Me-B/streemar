@@ -1,5 +1,6 @@
 import express from "express"
 import "dotenv/config"
+import cors from "cors"
 import cookieParser  from "cookie-parser"
 import { connectDB } from "./lib/db.js"
 import authRoutes from "./routes/auth.route.js"
@@ -11,6 +12,10 @@ const PORT = process.env.PORT
 const app = express()
 
 // Middleware instantiation
+app.use(cors({
+    origin: "http://localhost:5173",
+    credentials: true, //Frontend can access cookies
+}))
 app.use(express.json())
 app.use(cookieParser())
 
