@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router"
+import { Routes, Route, data } from "react-router"
 import toast, { Toaster } from "react-hot-toast"
 import { axiosInstance } from "./lib/axios.js"
 import { Navigate } from "react-router"
@@ -16,13 +16,14 @@ const App = () => {
   // tanstack query - to fecth the authenticated user
   const { data: authData, isLoading, error } = useQuery({
     queryKey: ["authUser"],
+
     queryFn: async () => {
       const res = await axiosInstance.get("/auth/me")
       return res.data
     },
     retry: false, // for auth check
   })
-
+ console.log(authData)
   const authUser = authData?.user
 
   return (
