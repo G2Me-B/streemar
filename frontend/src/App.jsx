@@ -1,5 +1,5 @@
-import { Routes, Route, data } from "react-router"
-import toast, { Toaster } from "react-hot-toast"
+import { Routes, Route,  } from "react-router"
+import { Toaster } from "react-hot-toast"
 import { axiosInstance } from "./lib/axios.js"
 import { Navigate } from "react-router"
 import HompePage from "./pages/HomePage.jsx"
@@ -23,17 +23,17 @@ const App = () => {
     },
     retry: false, // for auth check
   })
- console.log(authData)
+  //  console.log(authData)
   const authUser = authData?.user
 
   return (
     <div className=" h-screen" data-themes="night">
-      
+
       <Routes>
         <Route path="/" element={authUser ? <HompePage /> : <Navigate to="/login" />} />
         <Route path="/signup" element={!authUser ? <SignUpPage /> : <Navigate to="/" />} />
         <Route path="/login" element={!authUser ? <LoginPage /> : <Navigate to="/" />} />
-        <Route path="/notifications" element={authUser ? <NotificationsPage />: <Navigate to="/login" />} />
+        <Route path="/notifications" element={authUser ? <NotificationsPage /> : <Navigate to="/login" />} />
         <Route path="/call" element={authUser ? <CallPage /> : <Navigate to="/login" />} />
         <Route path="/chat" element={authUser ? <ChatPage /> : <Navigate to="/login" />} />
         <Route path="/onboarding" element={authUser ? <OnboardingPage /> : <Navigate to="/login" />} />
