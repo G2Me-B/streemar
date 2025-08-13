@@ -2,9 +2,7 @@ import { useState } from "react";
 import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { axiosInstance as axios, axiosInstance } from "../lib/axios.js"; // Assuming you have an axios instance set up
-
-import useSignUp from "../hooks/useSignUp.js";
+import { Navigate } from "react-router"
 import { signup } from "../lib/api.js"; // Import the signup function from your API module
 
 const SignUpPage = () => {
@@ -20,12 +18,12 @@ const SignUpPage = () => {
     mutationFn: signup,
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
   });
-  // // This is how we did it using our custom hook - optimized version
+  // This is how we did it using our custom hook - optimized version
   // const { isPending, error, signupMutation } = useSignUp();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    signupMutation(signupData);
+    signupMutation(signupData); 
   };
 
   return (
@@ -44,7 +42,7 @@ const SignUpPage = () => {
             </span>
           </div>
 
-          ERROR MESSAGE IF ANY
+          {/* ERROR MESSAGE IF ANY */}
           {error && (
             <div className="alert alert-error mb-4">
               <span>{error.response.data.message}</span>
