@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from 'react-hot-toast';
-import { login } from '../lib/api';
 import { Link } from 'react-router';
 import { ShipWheelIcon } from 'lucide-react';
 import useLogin from '../hooks/useLogin';
@@ -22,7 +19,7 @@ const LoginPage = () => {
   //     toast.error(error.response.data.message);
   //   }
   // });
-  const {isPending, error, loginMutation} = useLogin();
+  const { isPending, error, loginMutation } = useLogin();
 
   const handleLogin = (e) => {
     e.preventDefault()

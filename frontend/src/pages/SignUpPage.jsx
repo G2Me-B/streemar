@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Navigate } from "react-router"
-import { signup } from "../lib/api.js"; // Import the signup function from your API module
 import useSignUp from "../hooks/useSignUp.js";
 
 const SignUpPage = () => {
@@ -22,11 +19,11 @@ const SignUpPage = () => {
   // This is how we did it using our custom hook - optimized version
   // const { isPending, error, signupMutation } = useSignUp();
 
-const {isPending, error, signupMutation} = useSignUp();
+  const { isPending, error, signupMutation } = useSignUp();
 
   const handleSignup = (e) => {
     e.preventDefault();
-    signupMutation(signupData); 
+    signupMutation(signupData);
   };
 
   return (
