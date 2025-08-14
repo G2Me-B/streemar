@@ -8,9 +8,11 @@ const useLogout = () => {
 
     const { mutate: logoutMutation, isPending, error } = useMutation({
         mutationFn: logout,
-        onSuccess: () => queryClient.setQueryData(["authUser"])
+        onSuccess: () => {
+            queryClient.setQueryData(["authUser"])
+            navigate("/login")
+        }
     })
-    navigate("/login")
     return { logoutMutation, isPending, error }
 }
 
