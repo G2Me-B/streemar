@@ -1,4 +1,3 @@
-import { useThemeStore } from '../store/useThemeStore'
 import { useQueryClient, useQuery, useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { getRecommendedUsers, getUserFriends, getOutgoingFriendReqs, sendFriendRequest } from '../lib/api'
@@ -167,4 +166,4 @@ const HomePage = () => {
 
 export default HomePage
 
- const capitialize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
+const capitialize = (str) => str.charAt(0).toUpperCase() + str.slice(1)
