@@ -1,9 +1,8 @@
 import { useLocation,Link } from "react-router"
 import useAuthUser from "../hooks/useAuthUser"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { logout } from "../lib/api"
 import { BellIcon, LogOutIcon, ShipWheelIcon } from "lucide-react";
 import ThemeSelector from "./ThemeSelector.jsx"
+import useLogout from "../hooks/useLogout.js";
 
 const Navbar = () => {
 
@@ -11,14 +10,14 @@ const Navbar = () => {
     const location = useLocation()
     const isChatPage = location.pathname.startsWith("/chat")
 
-    const queryClient = useQueryClient()
+    // const queryClient = useQueryClient()
 
-    const { mutate: logoutMutation } = useMutation({
-        mutationFn: logout,
-        onSuccess: () => queryClient.setQueryData(["authUser"]) 
-    })
+    // const { mutate: logoutMutation } = useMutation({
+    //     mutationFn: logout,
+    //     onSuccess: () => queryClient.setQueryData(["authUser"]) 
+    // })
 
-   
+    const {logoutMutation} = useLogout()
 
     return (
          <nav className="bg-base-200 border-b border-base-300 sticky top-0 z-30 h-16 flex items-center">
