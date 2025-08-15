@@ -15,7 +15,7 @@ router.get("/friends", getMyFriends)
 // send a friend request
 router.post("/friend-request/:id", sendFriendRequest)
 // accept a friend request
-router.put("/fiend-request/:id/accept", acceptFriendRequest)
+router.put("/friend-request/:id/accept", acceptFriendRequest)
 
 router.get("/friend-request", getFriendRequest)
 router.get("/outgoing-friend-requests", getOutgoingFriendReqs)
