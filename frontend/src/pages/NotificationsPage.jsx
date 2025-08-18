@@ -1,22 +1,29 @@
+
+import { useState } from "react"
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query"
-import { getFriendRequests,acceptFriendRequest } from "../lib/api"
+import { getFriendRequests, acceptFriendRequest } from "../lib/api"
 import { UserCheckIcon, BellIcon, ClockIcon, MessageSquareIcon } from "lucide-react"
 import NoNotificationsFound from "../components/NoFriendsFound"
 
 
 const NotificationsPage = () => {
   const queryClient = useQueryClient()
+  const [acceptingId, setAcceptingId] = useState(null)
 
   const { data: friendRequests, isLoading } = useQuery({
     queryKey: ["friendRequests"],
     queryFn: getFriendRequests,
   })
 
-  const { mutate: acceptRequestMutation, isPending } = useMutation({
+  const { mutate: acceptRequestMutation } = useMutation({
     mutationFn: acceptFriendRequest,
     onSuccess: () => {
       queryClient.invalidateQueries(["friendRequests"])
       queryClient.invalidateQueries(["friends"])
+      setAcceptingId(null)
+    },
+    onError: () => {
+      setAcceptingId(null)
     }
   })
 
@@ -52,7 +59,10 @@ const NotificationsPage = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className="avatar w-14 h-14 rounded-full bg-base-300">
-                              <img src={request.sender.profilePic} alt={request.sender.fullName} />
+                              <img
+                                src={request.sender?.profilePic || "/default-avatar.png"}
+                                alt={request.sender?.fullName || "User"}
+                              />
                             </div>
                             <div>
                               <h3 className="font-semibold">{request.sender.fullName}</h3>
@@ -69,10 +79,13 @@ const NotificationsPage = () => {
 
                           <button
                             className="btn btn-primary btn-sm"
-                            onClick={() => acceptRequestMutation(request._id)}
-                            disabled={isPending}
+                            onClick={() => {
+                              setAcceptingId(request._id)
+                              acceptRequestMutation(request._id)
+                            }}
+                            disabled={acceptingId === request._id}
                           >
-                            Accept
+                            {acceptingId === request._id ? "Accepting..." : "Accept"}
                           </button>
                         </div>
                       </div>
@@ -97,14 +110,14 @@ const NotificationsPage = () => {
                         <div className="flex items-start gap-3">
                           <div className="avatar mt-1 size-10 rounded-full">
                             <img
-                              src={notification.recipient.profilePic}
-                              alt={notification.recipient.fullName}
+                              src={notification.recipient?.profilePic || "/default-avatar.png"}
+                              alt={notification.recipient?.fullName || "User"}
                             />
                           </div>
                           <div className="flex-1">
-                            <h3 className="font-semibold">{notification.recipient.fullName}</h3>
+                            <h3 className="font-semibold">{notification.recipient?.fullName || "User"}</h3>
                             <p className="text-sm my-1">
-                              {notification.recipient.fullName} accepted your friend request
+                              {(notification.recipient?.fullName || "User")} accepted your friend request
                             </p>
                             <p className="text-xs flex items-center opacity-70">
                               <ClockIcon className="h-3 w-3 mr-1" />

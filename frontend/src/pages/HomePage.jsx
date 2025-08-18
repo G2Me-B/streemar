@@ -28,25 +28,36 @@ const HomePage = () => {
     queryFn: getOutgoingFriendReqs,
   })
 
-  const { mutate: sendRequestMutation, isPending: sendingRequest } = useMutation({
+  const [pendingRequestIds, setPendingRequestIds] = useState(new Set());
+  const { mutate: sendRequestMutation } = useMutation({
     mutationFn: sendFriendRequest,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["outgoingRequests"])
+    onMutate: (userId) => {
+      setPendingRequestIds(prev => new Set(prev).add(userId));
+    },
+    onSettled: (data, error, userId) => {
+      setPendingRequestIds(prev => {
+        const next = new Set(prev);
+        next.delete(userId);
+        return next;
+      });
+      queryClient.invalidateQueries(["outgoingRequests"]);
     }
-  })
+  });
 
   useEffect(() => {
     const outgoingIds = new Set()
     if (outgoingFriendRequests && outgoingFriendRequests.length > 0) {
       outgoingFriendRequests.forEach((req) => {
-        outgoingIds.add(req.recipient._id)
+        if (req && req.recipient && req.recipient._id) {
+          outgoingIds.add(req.recipient._id)
+        }
       })
       setOutgoingRequestIds(outgoingIds)
     }
   }, [outgoingFriendRequests])
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-6 lg:p-8 bg-base-100 min-h-screen pb-16">
       <div className="container mx-auto space-y-10">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">Your Friends</h2>
@@ -63,9 +74,14 @@ const HomePage = () => {
         ) : friends.length === 0 ? (
           <NoFriendsFound />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {friends.map((friend) => (
-              <FriendCard key={friend._id} friend={friend} />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mb-10">
+            {friends.filter(Boolean).map((friend) => (
+              friend && friend._id ? (
+                <FriendCard key={friend._id} friend={{
+                  ...friend,
+                  profilePic: friend.profilePic || "/default-avatar.png"
+                }} />
+              ) : null
             ))}
           </div>
         )}
@@ -94,8 +110,9 @@ const HomePage = () => {
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendedUsers.map((user) => {
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+              {recommendedUsers.filter(Boolean).map((user) => {
+                if (!user || !user._id) return null;
                 const hasRequestBeenSent = outgoingRequestIds.has(user._id)
 
                 return (
@@ -106,11 +123,11 @@ const HomePage = () => {
                     <div className="card-body p-5 space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="avatar size-16 rounded-full">
-                          <img src={user.profilePic} alt={user.fullName} />
+                          <img src={user.profilePic || "/default-avatar.png"} alt={user.fullName || "User"} />
                         </div>
 
                         <div>
-                          <h3 className="font-semibold text-lg">{user.fullName}</h3>
+                          <h3 className="font-semibold text-lg">{user.fullName || "User"}</h3>
                           {user.location && (
                             <div className="flex items-center text-xs opacity-70 mt-1">
                               <MapPinIcon className="size-3 mr-1" />
@@ -136,10 +153,9 @@ const HomePage = () => {
 
                       {/* Action button */}
                       <button
-                        className={`btn w-full mt-2 ${hasRequestBeenSent ? "btn-disabled" : "btn-primary"
-                          } `}
+                        className={`btn w-full mt-2 ${hasRequestBeenSent ? "btn-disabled" : "btn-primary"}`}
                         onClick={() => sendRequestMutation(user._id)}
-                        disabled={hasRequestBeenSent || sendingRequest}
+                        disabled={hasRequestBeenSent || pendingRequestIds.has(user._id)}
                       >
                         {hasRequestBeenSent ? (
                           <>
