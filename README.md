@@ -17,11 +17,11 @@ This is a fully fledged chat and video call application
 - ⏳ And much more!
 
 ##
-![alt text](image.png)
-![alt text](image-1.png)
-![alt text](image-2.png)
-![alt text](image-3.png)
-![alt text](image.png)
-![alt text](image.png)
-![alt text](image-1.png)
+(image.png)
+(image-1.png)
+(image-2.png)
+(image-3.png)
+(image.png)
+(image.png)
+(image-1.png)
 
