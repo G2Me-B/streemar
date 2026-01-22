@@ -14,9 +14,6 @@ This is a fully fledged chat and video call application
 - 🚨 Error Handling (Frontend & Backend)
 - 🚀 Free Deployment
 - 🎯 Built with Scalable Technologies like Stream
-<<<<<<< HEAD
-- ⏳ And much more!
-=======
 - ⏳ And much more!
 
 # ![alt text](image-2.png)
@@ -25,4 +22,4 @@ This is a fully fledged chat and video call application
 # ![alt text](image-5.png)
 # ![alt text](image-6.png)
 
->>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
+
