@@ -21,10 +21,7 @@
     "router": "^2.2.0",
     "stream-chat": "^8.60.0",
     "stream-chat-react": "^12.14.0",
-<<<<<<< HEAD
-=======
     "streemar": "file:..",
->>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
     "zustand": "^5.0.7"
   },
   "devDependencies": {
