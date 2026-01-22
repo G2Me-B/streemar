@@ -24,7 +24,11 @@ export async function signup(req, res) {
 
         const existingUser = await User.findOne({ email })
         if (existingUser) {
+<<<<<<< HEAD
             return res.status(400).json({ message: "Email already exists, kindy use another" })
+=======
+            return res.status(400).json({ message: "Email already exists, kindly use another" })
+>>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
         }
 
         // Generate a token id
@@ -62,7 +66,11 @@ export async function signup(req, res) {
             secure: process.env.NODE_ENV === "production"
         })
 
+<<<<<<< HEAD
         res.status(201).json({ sucess: true, user: newUser })
+=======
+        res.status(201).json({ success: true, user: newUser })
+>>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
     } catch (error) {
         console.log("Error in signup controller", error)
         res.status(500).json({ message: "Internal Server Error " })
@@ -94,7 +102,11 @@ export async function login(req, res) {
             secure: process.env.NODE_ENV === "production"
         })
 
+<<<<<<< HEAD
         res.status(200).json({ sucess: true, user })
+=======
+        res.status(200).json({ success: true, user })
+>>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
 
     } catch (error) {
         console.log("Error in signup controller", error)
@@ -104,7 +116,11 @@ export async function login(req, res) {
 
 export async function logout(req, res) {
     res.clearCookie("jwt")
+<<<<<<< HEAD
     res.status(200).json({ sucess: true, message: "Logout successful" })
+=======
+    res.status(200).json({ success: true, message: "Logout successful" })
+>>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
 }
 
 export async function onboard(req, res) {
@@ -141,10 +157,17 @@ export async function onboard(req, res) {
             console.log("Error updating Stream user during onboarding:", streamError.message)
         }
 
+<<<<<<< HEAD
         res.status(200).json({ sucess: true, user: updatedUser })
 
     } catch (error) {
         console.error("Onboading error: ", error)
+=======
+        res.status(200).json({ success: true, user: updatedUser })
+
+    } catch (error) {
+        console.error("Onboarding error: ", error)
+>>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
         res.status(500).json({ message: "Internal Server Error " })
     }
 }

@@ -7,6 +7,7 @@
     "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend",
     "start": "npm run start --prefix backend"
   },
+<<<<<<< HEAD
   "repository": {
     "type": "git",
     "url": "git+https://github.com/G2Me-B/streemar.git"
@@ -19,3 +20,9 @@
   },
   "homepage": "https://github.com/G2Me-B/streemar#readme"
 }
+=======
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
+>>>>>>> ba5fd9732361078b647e3d34e49d58ba3adba2a4
